@@ -22,6 +22,18 @@ export const TodoItem: React.FC<Props> = ({ id, text, completed }) => {
 		dispatch({ type: 'DELETE_TASK', payload: id })
 	}
 
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault()
+			handleToggle()
+		}
+
+		if (e.key === 'Delete') {
+			e.preventDefault()
+			handleDelete()
+		}
+	}
+
 	return (
 		<motion.li
 			layout
@@ -33,10 +45,12 @@ export const TodoItem: React.FC<Props> = ({ id, text, completed }) => {
 				stiffness: 500,
 				damping: 30
 			}}
-			className="flex items-center item-box cursor-pointer"
+			className="flex items-center item-box cursor-pointer hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-accent"
 			onClick={handleToggle}
 			aria-checked={completed}
 			role="checkbox"
+			onKeyDown={handleKeyDown}
+			tabIndex={0}
 		>
 			<span className="flex-shrink-0 mr-2">
 				{completed ? (
